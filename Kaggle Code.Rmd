@@ -1,0 +1,64 @@
+---
+title: "Kaggle Code"
+author: "Benjamin Gerber & Kuiwen Ma"
+date: "7/28/2021"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Loading in Data
+
+```{r}
+library(readr)
+Train.Data <- read_csv("~/Desktop/Stats 101C/BC Train.csv")
+Test.Data <- read_csv("~/Desktop/Stats 101C/BC Test NoY.csv")
+```
+
+# Getting Rid of NA's
+
+```{r}
+Train.Data <- na.omit(Train.Data)
+```
+
+# Testing a GLM Model
+
+```{r}
+Train.t <- Train.Data[,-c(1)]
+Model3 <- glm(as.factor(diagnosis) ~ ., family = "binomial", data=Train.t)
+
+summary(Model3)
+```
+
+# Using AIC to Find a Better, Simpler Model
+
+Using the step function, AIC, and in a backwards direction, we can get the number of variables down to only those that are significant.
+
+```{r}
+step(Model3, direction = "backward")
+```
+
+The step function helped to show us that the best variables to use in the final model are: radius_mean, fractal_dimension_mean, texture_se, area_worst, and menopause, so that is what we included in the final model.
+
+# Our Final Model
+
+```{r}
+Model6 <- glm(as.factor(diagnosis) ~ radius_mean + fractal_dimension_mean + texture_se +
+                area_worst + menopause, family = "binomial", data=Train.t)
+
+summary(Model6)
+```
+
+# Creating the Kaggle Submission CSV File
+
+```{r}
+Ob <- 1:321
+
+diagnosis <- predict(Model6, Test.Data, type = "response")
+diagnosis <- ifelse(diagnosis>=0.5,"M","B")
+
+KaggleProject <- data.frame(Ob,diagnosis)
+write.csv(KaggleProject,file="Attempt2.csv", row.names= FALSE)
+```
