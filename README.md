@@ -1,1 +1,3 @@
-# STATS_101C_FINAL
+# STATS 101C FINAL
+
+The object of the Kaggle Project was to create the best possible model that would predict a diagnosis for whether a person’s tumor was cancerous or not. The classification of diagnosis was one of two categories, “benign” or “malignant” based on the classification model. We used training data to create the model, and then testing data through to submit to Kaggle and get ranked. Each group was ranked based on how accurately their model predicted whether an observation was a cancerous or benign tumor. We were also graded separately for how simple or complex our model was. Simpler models got a better score, since they could be much more easily explained as well as being computationally less expensive. We tested multiple types of categorization models, including logistic, QDA, LDA, random forest, but ultimately decided that logistic performed the best, and was easiest to breakdown.
